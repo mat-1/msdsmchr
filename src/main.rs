@@ -66,7 +66,7 @@ fn main() {
 
     let head_front = crop_section(&img, 1, 1);
     let head_front_projection = Projection::from_matrix(TRANSFORM_FRONT_BACK_MATRIX).unwrap()
-        * Projection::translate(133.0, 179.5)
+        * Projection::translate(133.5, 179.5)
         * Projection::scale(scale, scale + (1.0 / 8.0));
     let mut head_front_warped = ImageBuffer::new(size, size);
     warp_into(
