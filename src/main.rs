@@ -40,6 +40,7 @@ fn main() {
 
     // transparent image of size
     let mut out = ImageBuffer::from_pixel(size, size, Rgba([255, 255, 255, 255]));
+    // let mut out = ImageBuffer::new(size, size);
 
     let img = image::open("steve.png").unwrap();
 
@@ -51,7 +52,7 @@ fn main() {
 
     let head_top = crop_section(&img, 1, 0);
     let head_top_projection = Projection::from_matrix(TRANSFORM_TOP_BOTTOM_MATRIX).unwrap()
-        * Projection::translate(-43.0, 80.0)
+        * Projection::translate(-40.0, 83.0)
         * Projection::scale(scale, scale + (1.0 / 8.0));
     let mut head_top_warped = ImageBuffer::new(size, size);
     warp_into(
@@ -65,7 +66,7 @@ fn main() {
 
     let head_front = crop_section(&img, 1, 1);
     let head_front_projection = Projection::from_matrix(TRANSFORM_FRONT_BACK_MATRIX).unwrap()
-        * Projection::translate((size / 2) as f32, 176.0)
+        * Projection::translate(133.0, 179.5)
         * Projection::scale(scale, scale + (1.0 / 8.0));
     let mut head_front_warped = ImageBuffer::new(size, size);
     warp_into(
@@ -79,8 +80,8 @@ fn main() {
 
     let head_right = crop_section(&img, 2, 1);
     let head_right_projection = Projection::from_matrix(TRANSFORM_RIGHT_LEFT_MATRIX).unwrap()
-        * Projection::translate(20.0, 50.0)
-        * Projection::scale(scale, scale + (1.0 / 8.0));
+        * Projection::translate(121.0, 52.0)
+        * Projection::scale(-(scale + (0.5 / 8.0)), scale + (1.0 / 8.0));
     let mut head_right_warped = ImageBuffer::new(size, size);
     warp_into(
         &head_right.into_rgba8(),
