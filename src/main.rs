@@ -35,7 +35,7 @@ const TRANSFORM_RIGHT_LEFT_MATRIX: [f32; 9] = [
 
 fn main() {
     // Must be a multiple of SECTION_SIZE (8)
-    let size: u32 = 256;
+    let size: u32 = 128;
     let scale = (size / 20) as f32;
 
     // transparent image of size
@@ -46,7 +46,10 @@ fn main() {
 
     let head_top = crop_section(&img, 1, 0);
     let head_top_projection = Projection::from_matrix(TRANSFORM_TOP_BOTTOM_MATRIX).unwrap()
-        * Projection::translate((size as f32) * (-5f32 / 32f32), 83.0)
+        * Projection::translate(
+            (size as f32) * (-40f32 / 256f32),
+            (size as f32) * (83.0 / 256.0),
+        )
         * Projection::scale(scale, scale);
     let mut head_top_warped = ImageBuffer::new(size, size);
     warp_into(
@@ -60,7 +63,10 @@ fn main() {
 
     let head_front = crop_section(&img, 1, 1);
     let head_front_projection = Projection::from_matrix(TRANSFORM_FRONT_BACK_MATRIX).unwrap()
-        * Projection::translate(132.5, 178.0)
+        * Projection::translate(
+            (size as f32) * (132.5 / 256.0),
+            (size as f32) * (178.0 / 256.0),
+        )
         * Projection::scale(scale, scale);
     let mut head_front_warped = ImageBuffer::new(size, size);
     warp_into(
@@ -74,7 +80,10 @@ fn main() {
 
     let head_right = crop_section(&img, 2, 1);
     let head_right_projection = Projection::from_matrix(TRANSFORM_RIGHT_LEFT_MATRIX).unwrap()
-        * Projection::translate(121.0, 52.0)
+        * Projection::translate(
+            (size as f32) * (121.0 / 256.0),
+            (size as f32) * (52.0 / 256.0),
+        )
         * Projection::scale(-scale, scale);
     let mut head_right_warped = ImageBuffer::new(size, size);
     warp_into(
