@@ -44,16 +44,10 @@ fn main() {
 
     let img = image::open("steve.png").unwrap();
 
-    let x_offset = scale * 2.0;
-    let z_offset = scale * 3.0;
-
-    let x_render_offset = scale.ceil() as u32;
-    let z_render_offset = x_render_offset / 2;
-
     let head_top = crop_section(&img, 1, 0);
     let head_top_projection = Projection::from_matrix(TRANSFORM_TOP_BOTTOM_MATRIX).unwrap()
-        * Projection::translate(-40.0, 83.0)
-        * Projection::scale(scale, scale + (1.0 / 8.0));
+        * Projection::translate((size as f32) * (-5f32 / 32f32), 83.0)
+        * Projection::scale(scale, scale);
     let mut head_top_warped = ImageBuffer::new(size, size);
     warp_into(
         &head_top.into_rgba8(),
@@ -66,8 +60,8 @@ fn main() {
 
     let head_front = crop_section(&img, 1, 1);
     let head_front_projection = Projection::from_matrix(TRANSFORM_FRONT_BACK_MATRIX).unwrap()
-        * Projection::translate(133.5, 179.5)
-        * Projection::scale(scale, scale + (1.0 / 8.0));
+        * Projection::translate(132.5, 178.0)
+        * Projection::scale(scale, scale);
     let mut head_front_warped = ImageBuffer::new(size, size);
     warp_into(
         &head_front.into_rgba8(),
@@ -81,7 +75,7 @@ fn main() {
     let head_right = crop_section(&img, 2, 1);
     let head_right_projection = Projection::from_matrix(TRANSFORM_RIGHT_LEFT_MATRIX).unwrap()
         * Projection::translate(121.0, 52.0)
-        * Projection::scale(-(scale + (0.5 / 8.0)), scale + (1.0 / 8.0));
+        * Projection::scale(-scale, scale);
     let mut head_right_warped = ImageBuffer::new(size, size);
     warp_into(
         &head_right.into_rgba8(),
