@@ -39,15 +39,15 @@ fn main() {
     let scale = (size / 20) as f32;
 
     // transparent image of size
-    let mut out = ImageBuffer::from_pixel(size, size, Rgba([255, 255, 255, 255]));
-    // let mut out = ImageBuffer::new(size, size);
+    // let mut out = ImageBuffer::from_pixel(size, size, Rgba([255, 255, 255, 255]));
+    let mut out = ImageBuffer::new(size, size);
 
     let img = image::open("steve.png").unwrap();
 
     let head_top = crop_section(&img, 1, 0);
     let head_top_projection = Projection::from_matrix(TRANSFORM_TOP_BOTTOM_MATRIX).unwrap()
         * Projection::translate(
-            (size as f32) * (-40f32 / 256f32),
+            (size as f32) * (-40.0 / 256.0),
             (size as f32) * (83.0 / 256.0),
         )
         * Projection::scale(scale, scale);
@@ -65,7 +65,7 @@ fn main() {
     let head_front_projection = Projection::from_matrix(TRANSFORM_FRONT_BACK_MATRIX).unwrap()
         * Projection::translate(
             (size as f32) * (132.5 / 256.0),
-            (size as f32) * (178.0 / 256.0),
+            (size as f32) * (177.5 / 256.0),
         )
         * Projection::scale(scale, scale);
     let mut head_front_warped = ImageBuffer::new(size, size);
