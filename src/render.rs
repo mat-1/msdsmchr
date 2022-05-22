@@ -1,4 +1,4 @@
-use image::{imageops, DynamicImage, GenericImageView, ImageBuffer, Rgba};
+use image::{imageops, DynamicImage, GenericImage, GenericImageView, ImageBuffer, Pixel, Rgba};
 use imageproc::geometric_transformations::{warp, warp_into, Interpolation, Projection};
 
 const SKEW_A: f32 = 26.0 / 45.0;
@@ -45,6 +45,36 @@ struct OverlaySectionOptions {
     pub flip: bool,
 }
 
+pub fn no_blend_overlay(
+    bottom: &mut ImageBuffer<Rgba<u8>, Vec<u8>>,
+    top: &ImageBuffer<Rgba<u8>, Vec<u8>>,
+    x: i64,
+    y: i64,
+) {
+    let bottom_dims = bottom.dimensions();
+    let top_dims = top.dimensions();
+
+    // // Crop our top image if we're going out of bounds
+    // let (origin_bottom_x, origin_bottom_y, origin_top_x, origin_top_y, range_width, range_height) =
+    //     overlay_bounds_ext(bottom_dims, top_dims, x, y);
+    // we're guaranteed to not go out of bounds
+    let (origin_bottom_x, origin_bottom_y, origin_top_x, origin_top_y, range_width, range_height) =
+        (0, 0, 0, 0, top_dims.0, top_dims.1);
+
+    for y in 0..range_height {
+        for x in 0..range_width {
+            let p = top.get_pixel(origin_top_x + x, origin_top_y + y);
+            let mut bottom_pixel = *bottom.get_pixel(origin_bottom_x + x, origin_bottom_y + y);
+            if p.0[3] == 0 {
+                continue;
+            }
+            bottom_pixel.blend(&p);
+
+            bottom.put_pixel(origin_bottom_x + x, origin_bottom_y + y, bottom_pixel);
+        }
+    }
+}
+
 fn overlay_section(
     out: &mut ImageBuffer<Rgba<u8>, Vec<u8>>,
     skin: &DynamicImage,
@@ -62,7 +92,7 @@ fn overlay_section(
         Rgba([0, 0, 0, 0]),
         &mut section_warped,
     );
-    imageops::overlay(out, &section_warped, 0, 0);
+    no_blend_overlay(out, &section_warped, 0, 0);
 }
 
 pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {

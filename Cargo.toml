@@ -1,10 +1,20 @@
 [package]
-name = "minecraft-head-render"
-version = "0.1.0"
 edition = "2021"
+name = "mcheadrender"
+version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 image = "0.24.2"
-imageproc = "0.23.0"
+imageproc = {version = "0.23.0", default-features = false, features = []}
+
+[dev-dependencies]
+criterion = "0.3.5"
+
+[[bench]]
+harness = false
+name = "benchmark"
+
+[profile.release]
+debug = true
