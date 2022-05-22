@@ -68,7 +68,9 @@ pub fn no_blend_overlay(
             if p.0[3] == 0 {
                 continue;
             }
-            bottom_pixel.blend(&p);
+            if p.0[3] != 255 {
+                bottom_pixel.blend(&p);
+            }
 
             bottom.put_pixel(origin_bottom_x + x, origin_bottom_y + y, bottom_pixel);
         }
