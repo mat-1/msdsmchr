@@ -7,7 +7,7 @@ version = "0.1.0"
 
 [dependencies]
 image = "0.24.2"
-imageproc = {version = "0.23.0", default-features = false, features = []}
+imageproc = {version = "0.23.0"}
 
 [dev-dependencies]
 criterion = "0.3.5"

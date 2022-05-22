@@ -398,6 +398,7 @@ dependencies = [
  "num",
  "rand",
  "rand_distr",
+ "rayon",
  "rusttype",
 ]
 
