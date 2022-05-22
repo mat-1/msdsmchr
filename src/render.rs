@@ -1,5 +1,5 @@
-use image::{imageops, DynamicImage, GenericImage, GenericImageView, ImageBuffer, Pixel, Rgba};
-use imageproc::geometric_transformations::{warp, warp_into, Interpolation, Projection};
+use image::{imageops, DynamicImage, ImageBuffer, Rgba};
+use imageproc::geometric_transformations::{warp_into, Interpolation, Projection};
 
 const SKEW_A: f32 = 26.0 / 45.0;
 const SKEW_B: f32 = SKEW_A * 2.0;
@@ -45,12 +45,12 @@ struct OverlaySectionOptions {
     pub flip: bool,
 }
 
-fn overlay_section(
+fn overlay_3d_section(
     out: &mut ImageBuffer<Rgba<u8>, Vec<u8>>,
     skin: &DynamicImage,
     opts: &OverlaySectionOptions,
 ) {
-    let section = crop_section(&skin, opts.x, opts.y);
+    let section = crop_section(skin, opts.x, opts.y);
     let section_projection = Projection::from_matrix(opts.matrix).unwrap()
         * Projection::translate(opts.translate_x, opts.translate_y)
         * Projection::scale(if opts.flip { -opts.scale } else { opts.scale }, opts.scale);
@@ -74,9 +74,9 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
     let mut out = ImageBuffer::new(size, size);
 
     // left overlay
-    overlay_section(
+    overlay_3d_section(
         &mut out,
-        &img,
+        img,
         &OverlaySectionOptions {
             size,
             x: 6,
@@ -89,9 +89,9 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
         },
     );
     // back overlay
-    overlay_section(
+    overlay_3d_section(
         &mut out,
-        &img,
+        img,
         &OverlaySectionOptions {
             size,
             x: 7,
@@ -105,9 +105,9 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
     );
 
     // top
-    overlay_section(
+    overlay_3d_section(
         &mut out,
-        &img,
+        img,
         &OverlaySectionOptions {
             size,
             x: 1,
@@ -120,9 +120,9 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
         },
     );
     // front
-    overlay_section(
+    overlay_3d_section(
         &mut out,
-        &img,
+        img,
         &OverlaySectionOptions {
             size,
             x: 1,
@@ -135,9 +135,9 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
         },
     );
     // right
-    overlay_section(
+    overlay_3d_section(
         &mut out,
-        &img,
+        img,
         &OverlaySectionOptions {
             size,
             x: 2,
@@ -151,9 +151,9 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
     );
 
     // front overlay
-    overlay_section(
+    overlay_3d_section(
         &mut out,
-        &img,
+        img,
         &OverlaySectionOptions {
             size,
             x: 5,
@@ -166,9 +166,9 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
         },
     );
     // right overlay
-    overlay_section(
+    overlay_3d_section(
         &mut out,
-        &img,
+        img,
         &OverlaySectionOptions {
             size,
             x: 4,
@@ -181,9 +181,9 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
         },
     );
     // top overlay
-    overlay_section(
+    overlay_3d_section(
         &mut out,
-        &img,
+        img,
         &OverlaySectionOptions {
             size,
             x: 5,
@@ -195,6 +195,18 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
             scale: (size / 20) as f32 * (9.0 / 8.0),
         },
     );
+
+    out
+}
+
+pub fn to_2d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
+    let mut out = ImageBuffer::new(8, 8);
+
+    let section = crop_section(img, 1, 1);
+    imageops::overlay(&mut out, &section, 0, 0);
+
+    let section = crop_section(img, 5, 1);
+    imageops::overlay(&mut out, &section, 0, 0);
 
     out
 }

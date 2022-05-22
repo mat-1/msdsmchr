@@ -1,9 +1,9 @@
 pub mod render;
 
 fn main() {
-    let img = image::open("py5.png").unwrap();
+    let img = image::open("skin.png").unwrap();
 
-    // for i in 0..1000 {
+    // for _ in 0..1000 {
     //     render::to_3d_head(&img);
     // }
 
