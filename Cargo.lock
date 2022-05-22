@@ -367,8 +367,6 @@ dependencies = [
 [[package]]
 name = "image"
 version = "0.24.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "28edd9d7bc256be2502e325ac0628bde30b7001b9b52e0abe31a1a9dc2701212"
 dependencies = [
  "bytemuck",
  "byteorder",
@@ -387,8 +385,6 @@ dependencies = [
 [[package]]
 name = "imageproc"
 version = "0.23.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6aee993351d466301a29655d628bfc6f5a35a0d062b6160ca0808f425805fd7"
 dependencies = [
  "approx",
  "conv",
@@ -398,7 +394,6 @@ dependencies = [
  "num",
  "rand",
  "rand_distr",
- "rayon",
  "rusttype",
 ]
 
