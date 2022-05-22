@@ -33,67 +33,170 @@ const TRANSFORM_RIGHT_LEFT_MATRIX: [f32; 9] = [
     0.0,     0.0,    1.0
 ];
 
+#[derive(Debug)]
+struct OverlaySectionOptions {
+    pub size: u32,
+    pub scale: f32,
+    pub x: u32,
+    pub y: u32,
+    pub matrix: [f32; 9],
+    pub translate_x: f32,
+    pub translate_y: f32,
+    pub flip: bool,
+}
+
+fn overlay_section(
+    out: &mut ImageBuffer<Rgba<u8>, Vec<u8>>,
+    skin: &DynamicImage,
+    opts: &OverlaySectionOptions,
+) {
+    let section = crop_section(&skin, opts.x, opts.y);
+    let section_projection = Projection::from_matrix(opts.matrix).unwrap()
+        * Projection::translate(opts.translate_x, opts.translate_y)
+        * Projection::scale(if opts.flip { -opts.scale } else { opts.scale }, opts.scale);
+    let mut section_warped = ImageBuffer::new(opts.size, opts.size);
+    warp_into(
+        &section.into_rgba8(),
+        &section_projection,
+        Interpolation::Nearest,
+        Rgba([0, 0, 0, 0]),
+        &mut section_warped,
+    );
+    imageops::overlay(out, &section_warped, 0, 0);
+}
+
 fn main() {
     // Must be a multiple of SECTION_SIZE (8)
     let size: u32 = 128;
-    let scale = (size / 20) as f32;
 
     // transparent image of size
     // let mut out = ImageBuffer::from_pixel(size, size, Rgba([255, 255, 255, 255]));
     let mut out = ImageBuffer::new(size, size);
 
-    let img = image::open("steve.png").unwrap();
+    let img = image::open("py5.png").unwrap();
 
-    let head_top = crop_section(&img, 1, 0);
-    let head_top_projection = Projection::from_matrix(TRANSFORM_TOP_BOTTOM_MATRIX).unwrap()
-        * Projection::translate(
-            (size as f32) * (-40.0 / 256.0),
-            (size as f32) * (83.0 / 256.0),
-        )
-        * Projection::scale(scale, scale);
-    let mut head_top_warped = ImageBuffer::new(size, size);
-    warp_into(
-        &head_top.into_rgba8(),
-        &head_top_projection,
-        Interpolation::Nearest,
-        Rgba([0, 0, 0, 0]),
-        &mut head_top_warped,
+    // left overlay
+    overlay_section(
+        &mut out,
+        &img,
+        &OverlaySectionOptions {
+            size,
+            x: 6,
+            y: 1,
+            matrix: TRANSFORM_RIGHT_LEFT_MATRIX,
+            translate_x: (size as f32) * (231.0 / 256.0) * (8.0 / 8.1),
+            translate_y: (size as f32) * (-56.0 / 256.0),
+            flip: true,
+            scale: (size / 20) as f32 * (9.0 / 8.0),
+        },
     );
-    imageops::overlay(&mut out, &head_top_warped, 0, 0);
+    // back overlay
+    overlay_section(
+        &mut out,
+        &img,
+        &OverlaySectionOptions {
+            size,
+            x: 7,
+            y: 1,
+            matrix: TRANSFORM_FRONT_BACK_MATRIX,
+            translate_x: (size as f32) * (26.0 / 256.0),
+            translate_y: (size as f32) * (70.0 / 256.0),
+            flip: false,
+            scale: (size / 20) as f32 * (9.0 / 8.0),
+        },
+    );
 
-    let head_front = crop_section(&img, 1, 1);
-    let head_front_projection = Projection::from_matrix(TRANSFORM_FRONT_BACK_MATRIX).unwrap()
-        * Projection::translate(
-            (size as f32) * (132.5 / 256.0),
-            (size as f32) * (177.5 / 256.0),
-        )
-        * Projection::scale(scale, scale);
-    let mut head_front_warped = ImageBuffer::new(size, size);
-    warp_into(
-        &head_front.into_rgba8(),
-        &head_front_projection,
-        Interpolation::Nearest,
-        Rgba([0, 0, 0, 0]),
-        &mut head_front_warped,
+    // top
+    overlay_section(
+        &mut out,
+        &img,
+        &OverlaySectionOptions {
+            size,
+            x: 1,
+            y: 0,
+            matrix: TRANSFORM_TOP_BOTTOM_MATRIX,
+            translate_x: (size as f32) * (-40.0 / 256.0),
+            translate_y: (size as f32) * (83.0 / 256.0),
+            flip: false,
+            scale: (size / 20) as f32,
+        },
     );
-    imageops::overlay(&mut out, &head_front_warped, 0, 0);
+    // front
+    overlay_section(
+        &mut out,
+        &img,
+        &OverlaySectionOptions {
+            size,
+            x: 1,
+            y: 1,
+            matrix: TRANSFORM_FRONT_BACK_MATRIX,
+            translate_x: (size as f32) * (132.5 / 256.0),
+            translate_y: (size as f32) * (177.5 / 256.0),
+            flip: false,
+            scale: (size / 20) as f32,
+        },
+    );
+    // right
+    overlay_section(
+        &mut out,
+        &img,
+        &OverlaySectionOptions {
+            size,
+            x: 2,
+            y: 1,
+            matrix: TRANSFORM_RIGHT_LEFT_MATRIX,
+            translate_x: (size as f32) * (121.0 / 256.0),
+            translate_y: (size as f32) * (52.0 / 256.0),
+            flip: true,
+            scale: (size / 20) as f32,
+        },
+    );
 
-    let head_right = crop_section(&img, 2, 1);
-    let head_right_projection = Projection::from_matrix(TRANSFORM_RIGHT_LEFT_MATRIX).unwrap()
-        * Projection::translate(
-            (size as f32) * (121.0 / 256.0),
-            (size as f32) * (52.0 / 256.0),
-        )
-        * Projection::scale(-scale, scale);
-    let mut head_right_warped = ImageBuffer::new(size, size);
-    warp_into(
-        &head_right.into_rgba8(),
-        &head_right_projection,
-        Interpolation::Nearest,
-        Rgba([0, 0, 0, 0]),
-        &mut head_right_warped,
+    // front overlay
+    overlay_section(
+        &mut out,
+        &img,
+        &OverlaySectionOptions {
+            size,
+            x: 5,
+            y: 1,
+            matrix: TRANSFORM_FRONT_BACK_MATRIX,
+            translate_x: (size as f32) * (132.5 / 256.0) * (8.1 / 8.0),
+            translate_y: (size as f32) * (177.5 / 256.0),
+            flip: false,
+            scale: (size / 20) as f32 * (9.0 / 8.0),
+        },
     );
-    imageops::overlay(&mut out, &head_right_warped, 0, 0);
+    // right overlay
+    overlay_section(
+        &mut out,
+        &img,
+        &OverlaySectionOptions {
+            size,
+            x: 4,
+            y: 1,
+            matrix: TRANSFORM_RIGHT_LEFT_MATRIX,
+            translate_x: (size as f32) * (26.0 / 256.0) * (8.0 / 8.1),
+            translate_y: (size as f32) * (52.0 / 256.0),
+            flip: false,
+            scale: (size / 20) as f32 * (9.0 / 8.0),
+        },
+    );
+    // top overlay
+    overlay_section(
+        &mut out,
+        &img,
+        &OverlaySectionOptions {
+            size,
+            x: 5,
+            y: 0,
+            matrix: TRANSFORM_TOP_BOTTOM_MATRIX,
+            translate_x: (size as f32) * (-40.0 / 256.0) * (8.0 / 8.1),
+            translate_y: (size as f32) * (83.0 / 256.0) * (8.0 / 9.0),
+            flip: false,
+            scale: (size / 20) as f32 * (9.0 / 8.0),
+        },
+    );
 
     out.save("head.png").unwrap();
 }
