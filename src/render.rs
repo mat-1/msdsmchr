@@ -70,8 +70,8 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
     let size: u32 = 128;
 
     // transparent image of size
-    let mut out = ImageBuffer::from_pixel(size, size, Rgba([255, 255, 255, 255]));
-    // let mut out = ImageBuffer::new(size, size);
+    // let mut out = ImageBuffer::from_pixel(size, size, Rgba([255, 255, 255, 255]));
+    let mut out = ImageBuffer::new(size, size);
 
     // left overlay
     overlay_3d_section(
