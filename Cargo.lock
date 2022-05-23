@@ -1314,7 +1314,7 @@ dependencies = [
 
 [[package]]
 name = "msdsmchr"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "actix-web",
  "base64",
