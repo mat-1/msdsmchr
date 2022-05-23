@@ -41,13 +41,14 @@ async fn make_3d_head(id: web::Path<String>) -> impl Responder {
 
 #[actix_web::main] // or #[tokio::main]
 async fn main() -> std::io::Result<()> {
+    println!("Running :)");
     HttpServer::new(|| {
         App::new()
             .service(index)
             .service(make_3d_head)
             .service(make_2d_head)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("0.0.0.0", 8080))?
     .run()
     .await
 }
