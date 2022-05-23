@@ -1,5 +1,5 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use mcheadrender::render;
+use msdsmchr::render;
 
 fn criterion_benchmark(c: &mut Criterion) {
     let img = image::open("skin.png").unwrap();
