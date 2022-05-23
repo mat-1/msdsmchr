@@ -25,7 +25,10 @@ async fn make_2d_head(id: web::Path<String>) -> impl Responder {
     skin_image
         .write_to(&mut buf, image::ImageOutputFormat::Png)
         .unwrap();
-    HttpResponse::Ok().body(buf.into_inner())
+    HttpResponse::Ok()
+        .append_header(("Content-Type", "image/png"))
+        .append_header(("Access-Control-Allow-Origin", "*"))
+        .body(buf.into_inner())
 }
 
 #[get("/3d/{id}.png")]
@@ -36,7 +39,10 @@ async fn make_3d_head(id: web::Path<String>) -> impl Responder {
     skin_image
         .write_to(&mut buf, image::ImageOutputFormat::Png)
         .unwrap();
-    HttpResponse::Ok().body(buf.into_inner())
+    HttpResponse::Ok()
+        .append_header(("Content-Type", "image/png"))
+        .append_header(("Access-Control-Allow-Origin", "*"))
+        .body(buf.into_inner())
 }
 
 #[actix_web::main] // or #[tokio::main]
