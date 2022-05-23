@@ -27,7 +27,7 @@ name = "benchmark"
 [profile.release]
 debug = true
 
-# this will be removed once my prs are merged
+# this will be removed once the changes are released
 [patch.crates-io]
 image = {git = "https://github.com/image-rs/image"}
 imageproc = {git = "https://github.com/mat-1/imageproc"}
