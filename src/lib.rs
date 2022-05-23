@@ -4,7 +4,7 @@ pub mod render;
 use std::io::Cursor;
 use worker::*;
 
-async fn index(req: Request, ctx: RouteContext<()>) -> Result<Response> {
+async fn index(_req: Request, _ctx: RouteContext<()>) -> Result<Response> {
     Response::from_html(
         "<h1>mat's super duper simple minecraft head renderer</h1>\
         <h2>Usage:</h2>\
@@ -17,9 +17,12 @@ async fn index(req: Request, ctx: RouteContext<()>) -> Result<Response> {
     )
 }
 
-async fn make_2d_head(req: Request, ctx: RouteContext<()>) -> Result<Response> {
+async fn make_2d_head(_req: Request, ctx: RouteContext<()>) -> Result<Response> {
     let id = ctx.param("id").unwrap();
-    let skin_bytes = mojang::download_from_id(&id).await.unwrap();
+    let skin_bytes = match mojang::download_from_id(&id).await {
+        Ok(bytes) => bytes,
+        Err(e) => return Response::error(e.to_string(), 400),
+    };
     let skin_image = render::to_2d_head(&image::load_from_memory(&skin_bytes).unwrap());
     let mut buf = Cursor::new(Vec::new());
     skin_image
@@ -33,12 +36,15 @@ async fn make_2d_head(req: Request, ctx: RouteContext<()>) -> Result<Response> {
     Ok(response)
 }
 
-async fn make_3d_head(req: Request, ctx: RouteContext<()>) -> Result<Response> {
+async fn make_3d_head(_req: Request, ctx: RouteContext<()>) -> Result<Response> {
     let id = match ctx.param("id") {
         Some(id) => id,
         None => return Response::error("Bad Request", 400),
     };
-    let skin_bytes = mojang::download_from_id(&id).await.unwrap();
+    let skin_bytes = match mojang::download_from_id(&id).await {
+        Ok(bytes) => bytes,
+        Err(e) => return Response::error(e.to_string(), 400),
+    };
     let skin_image = render::to_3d_head(&image::load_from_memory(&skin_bytes).unwrap());
     let mut buf = Cursor::new(Vec::new());
     skin_image
