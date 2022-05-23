@@ -10,14 +10,14 @@ async fn index() -> impl Responder {
         .body(
             "mat's super duper simple Minecraft head renderer\n\n\
             Usage:\n\
-              /2d/<id> - returns an 8x8 image of the front of the player's Minecraft head\n\
-              /3d/<id> - returns a 128x128 image of the player's Minecraft head, the same way it'd look in a Minecraft inventory\n\n\
+              /2d/<id>.png - returns an 8x8 image of the front of the player's Minecraft head\n\
+              /3d/<id>.png - returns a 128x128 image of the player's Minecraft head, the same way it'd look in a Minecraft inventory\n\n\
             You can use either an undashed player UUID or a resource ID.\n\n\
             https://github.com/mat-1/ TODO: add link to repo"
         )
 }
 
-#[get("/2d/{id}")]
+#[get("/2d/{id}.png")]
 async fn make_2d_head(id: web::Path<String>) -> impl Responder {
     let skin_bytes = mojang::download_from_id(&id).await.unwrap();
     let skin_image = render::to_2d_head(&image::load_from_memory(&skin_bytes).unwrap());
@@ -28,7 +28,7 @@ async fn make_2d_head(id: web::Path<String>) -> impl Responder {
     HttpResponse::Ok().body(buf.into_inner())
 }
 
-#[get("/3d/{id}")]
+#[get("/3d/{id}.png")]
 async fn make_3d_head(id: web::Path<String>) -> impl Responder {
     let skin_bytes = mojang::download_from_id(&id).await.unwrap();
     let skin_image = render::to_3d_head(&image::load_from_memory(&skin_bytes).unwrap());
