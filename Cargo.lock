@@ -621,7 +621,7 @@ dependencies = [
 
 [[package]]
 name = "msdsmchr"
-version = "0.2.3"
+version = "1.0.0"
 dependencies = [
  "base64",
  "console_error_panic_hook",
