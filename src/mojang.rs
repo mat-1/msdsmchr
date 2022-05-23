@@ -1,4 +1,3 @@
-use image::DynamicImage;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -47,7 +46,7 @@ pub async fn download_from_uuid(uuid: &str) -> Result<Vec<u8>, Box<dyn std::erro
     let skin_url = &skin_textures_data.textures.skin.url;
 
     // get the last part of the url
-    let skin_url_parts: Vec<&str> = skin_url.split("/").collect();
+    let skin_url_parts: Vec<&str> = skin_url.split('/').collect();
     let texture_id = skin_url_parts.last().unwrap();
 
     download_from_texture_id(texture_id).await
