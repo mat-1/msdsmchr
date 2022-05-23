@@ -32,6 +32,7 @@ async fn make_2d_head(id: web::Path<String>) -> impl Responder {
     HttpResponse::Ok()
         .append_header(("Content-Type", "image/png"))
         .append_header(("Access-Control-Allow-Origin", "*"))
+        .append_header(("Cache-Control", "public, max-age=86400"))
         .body(if DO_OPTIMIZATION {
             oxipng::optimize_from_memory(&buf.into_inner(), &oxipng::Options::from_preset(0))
                 .unwrap()
@@ -51,6 +52,7 @@ async fn make_3d_head(id: web::Path<String>) -> impl Responder {
     HttpResponse::Ok()
         .append_header(("Content-Type", "image/png"))
         .append_header(("Access-Control-Allow-Origin", "*"))
+        .append_header(("Cache-Control", "public, max-age=86400"))
         .body(if DO_OPTIMIZATION {
             oxipng::optimize_from_memory(&buf.into_inner(), &oxipng::Options::from_preset(0))
                 .unwrap()
