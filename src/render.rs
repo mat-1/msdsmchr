@@ -70,8 +70,8 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
     let size: u32 = 128;
 
     // transparent image of size
-    // let mut out = ImageBuffer::from_pixel(size, size, Rgba([255, 255, 255, 255]));
-    let mut out = ImageBuffer::new(size, size);
+    let mut out = ImageBuffer::from_pixel(size, size, Rgba([255, 255, 255, 255]));
+    // let mut out = ImageBuffer::new(size, size);
 
     // left overlay
     overlay_3d_section(
@@ -99,6 +99,21 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
             matrix: TRANSFORM_FRONT_BACK_MATRIX,
             translate_x: (size as f32) * (26.0 / 256.0),
             translate_y: (size as f32) * (70.0 / 256.0),
+            flip: false,
+            scale: (size / 20) as f32 * (9.0 / 8.0),
+        },
+    );
+    // bottom overlay
+    overlay_3d_section(
+        &mut out,
+        img,
+        &OverlaySectionOptions {
+            size,
+            x: 6,
+            y: 0,
+            matrix: TRANSFORM_TOP_BOTTOM_MATRIX,
+            translate_x: (size as f32) * (-145.0 / 256.0),
+            translate_y: (size as f32) * (177.0 / 256.0),
             flip: false,
             scale: (size / 20) as f32 * (9.0 / 8.0),
         },
@@ -195,7 +210,6 @@ pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
             scale: (size / 20) as f32 * (9.0 / 8.0),
         },
     );
-
     out
 }
 
