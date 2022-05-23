@@ -915,6 +915,7 @@ dependencies = [
 [[package]]
 name = "image"
 version = "0.24.2"
+source = "git+https://github.com/mat-1/image#51cf79557e72ad61ff3d7b8b1f4a116f9a918778"
 dependencies = [
  "bytemuck",
  "byteorder",
@@ -933,6 +934,7 @@ dependencies = [
 [[package]]
 name = "imageproc"
 version = "0.23.0"
+source = "git+https://github.com/mat-1/imageproc#8716ffd1e8cd340ea871689d090cd3756ed31841"
 dependencies = [
  "approx",
  "conv",

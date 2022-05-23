@@ -10,10 +10,10 @@ actix-web = "4.0.1"
 image = "0.24.2"
 reqwest = "0.11.10"
 # the rayon feature is disabled because it actually makes it slower
+base64 = "0.13.0"
 imageproc = {version = "0.23.0", default-features = false, features = []}
 serde = {version = "1.0.137", features = ["derive"]}
 serde_json = "1.0.81"
-base64 = "0.13.0"
 
 [dev-dependencies]
 criterion = "0.3.5"
@@ -25,6 +25,7 @@ name = "benchmark"
 [profile.release]
 debug = true
 
+# this will be removed once my prs are merged
 [patch.crates-io]
-image = {path = "../GitHub/image"}
-imageproc = {path = "../GitHub/imageproc"}
+image = {git = "https://github.com/mat-1/image"}
+imageproc = {git = "https://github.com/mat-1/imageproc"}
