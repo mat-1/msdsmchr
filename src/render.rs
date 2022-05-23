@@ -1,4 +1,4 @@
-use image::{imageops, DynamicImage, ImageBuffer, Rgba};
+use image::{imageops, DynamicImage, ImageBuffer, Pixel, Rgba};
 use imageproc::geometric_transformations::{warp_into, Interpolation, Projection};
 
 const SKEW_A: f32 = 26.0 / 45.0;
@@ -45,6 +45,32 @@ struct OverlaySectionOptions {
     pub flip: bool,
 }
 
+pub fn fast_overlay(
+    bottom: &mut ImageBuffer<Rgba<u8>, Vec<u8>>,
+    top: &ImageBuffer<Rgba<u8>, Vec<u8>>,
+) {
+    for y in 0..bottom.height() {
+        for x in 0..bottom.width() {
+            let index = (y as usize * bottom.width() as usize + x as usize) * 4;
+            let p = Rgba::<u8>::from_slice(
+                &top.as_raw()[index..(index + Rgba::<u8>::CHANNEL_COUNT as usize)],
+            );
+
+            if p.0[3] == 0 {
+                continue;
+            }
+
+            let mut bottom_pixel = *Rgba::<u8>::from_slice(
+                &bottom.as_raw()[index..(index + Rgba::<u8>::CHANNEL_COUNT as usize)],
+            );
+
+            bottom_pixel.blend(&p);
+
+            bottom.put_pixel(x, y, bottom_pixel);
+        }
+    }
+}
+
 fn overlay_3d_section(
     out: &mut ImageBuffer<Rgba<u8>, Vec<u8>>,
     skin: &DynamicImage,
@@ -62,7 +88,7 @@ fn overlay_3d_section(
         Rgba([0, 0, 0, 0]),
         &mut section_warped,
     );
-    imageops::overlay(out, &section_warped, 0, 0);
+    fast_overlay(out, &section_warped);
 }
 
 pub fn to_3d_head(img: &DynamicImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
