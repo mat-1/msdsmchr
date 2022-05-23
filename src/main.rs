@@ -59,32 +59,32 @@ async fn make_3d_head(id: web::Path<String>) -> impl Responder {
         })
 }
 
-// #[actix_web::main] // or #[tokio::main]
-// async fn main() -> std::io::Result<()> {
-//     println!("Running :)");
-//     HttpServer::new(|| {
-//         App::new()
-//             .service(index)
-//             .service(make_3d_head)
-//             .service(make_2d_head)
-//     })
-//     .bind(("0.0.0.0", 8080))?
-//     .run()
-//     .await
-// }
-
-fn main() {
-    let skin = image::open("skin.png").unwrap();
-
-    // for _ in 0..1000 {
-    let skin_image = render::to_3d_head(&skin);
-    let mut buf = Cursor::new(Vec::new());
-    skin_image
-        .write_to(&mut buf, image::ImageOutputFormat::Png)
-        .unwrap();
-    // let head =
-    //     oxipng::optimize_from_memory(&buf.into_inner(), &oxipng::Options::from_preset(0))
-    //         .unwrap();
-    // }
-    skin_image.save("head.png").unwrap();
+#[actix_web::main] // or #[tokio::main]
+async fn main() -> std::io::Result<()> {
+    println!("Running :)");
+    HttpServer::new(|| {
+        App::new()
+            .service(index)
+            .service(make_3d_head)
+            .service(make_2d_head)
+    })
+    .bind(("0.0.0.0", 8080))?
+    .run()
+    .await
 }
+
+// fn main() {
+//     let skin = image::open("skin.png").unwrap();
+
+//     // for _ in 0..1000 {
+//     let skin_image = render::to_3d_head(&skin);
+//     let mut buf = Cursor::new(Vec::new());
+//     skin_image
+//         .write_to(&mut buf, image::ImageOutputFormat::Png)
+//         .unwrap();
+//     // let head =
+//     //     oxipng::optimize_from_memory(&buf.into_inner(), &oxipng::Options::from_preset(0))
+//     //         .unwrap();
+//     // }
+//     skin_image.save("head.png").unwrap();
+// }
