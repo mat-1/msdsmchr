@@ -28,5 +28,4 @@ debug = true
 
 # this will be removed once my prs are merged
 [patch.crates-io]
-image = {git = "https://github.com/mat-1/image"}
 imageproc = {git = "https://github.com/mat-1/imageproc"}
