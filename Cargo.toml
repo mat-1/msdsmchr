@@ -5,17 +5,17 @@ version = "0.2.3"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [dependencies]
-actix-web = "4.0.1"
-image = "0.24.2"
-reqwest = {version = "0.11.10", features = ["json", "gzip", "brotli", "deflate"]}
-# the rayon feature is disabled because it actually makes it slower
 base64 = "0.13.0"
+console_error_panic_hook = "0.1.7"
+image = {version = "0.24.2", default-features = false, features = ["png"]}
 imageproc = {version = "0.23.0", default-features = false, features = []}
-lazy_static = "1.4.0"
-oxipng = "5.0.1"
 serde = {version = "1.0.137", features = ["derive"]}
 serde_json = "1.0.81"
+worker = "0.0.9"
 
 [dev-dependencies]
 criterion = "0.3.5"
@@ -31,3 +31,7 @@ debug = true
 [patch.crates-io]
 image = {git = "https://github.com/image-rs/image"}
 imageproc = {git = "https://github.com/mat-1/imageproc"}
+
+# [profile.release]
+# # Tell `rustc` to optimize for small code size.
+# opt-level = "s"
