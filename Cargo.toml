@@ -8,10 +8,11 @@ version = "0.2.1"
 [dependencies]
 actix-web = "4.0.1"
 image = "0.24.2"
-reqwest = "0.11.10"
+reqwest = {version = "0.11.10", features = ["json"]}
 # the rayon feature is disabled because it actually makes it slower
 base64 = "0.13.0"
 imageproc = {version = "0.23.0", default-features = false, features = []}
+lazy_static = "1.4.0"
 oxipng = "5.0.1"
 serde = {version = "1.0.137", features = ["derive"]}
 serde_json = "1.0.81"
@@ -28,4 +29,5 @@ debug = true
 
 # this will be removed once my prs are merged
 [patch.crates-io]
+image = {git = "https://github.com/image-rs/image"}
 imageproc = {git = "https://github.com/mat-1/imageproc"}

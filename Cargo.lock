@@ -1038,8 +1038,7 @@ dependencies = [
 [[package]]
 name = "image"
 version = "0.24.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "28edd9d7bc256be2502e325ac0628bde30b7001b9b52e0abe31a1a9dc2701212"
+source = "git+https://github.com/image-rs/image#7bdf398bcf55ca34851376cd9bd78231fc204610"
 dependencies = [
  "bytemuck",
  "byteorder",
@@ -1308,6 +1307,7 @@ dependencies = [
  "criterion",
  "image 0.24.2",
  "imageproc",
+ "lazy_static",
  "oxipng",
  "reqwest",
  "serde",

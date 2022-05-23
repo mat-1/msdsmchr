@@ -1,3 +1,4 @@
+use lazy_static::lazy_static;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -24,14 +25,17 @@ struct TexturesDataTexturesSkin {
     pub url: String,
 }
 
+lazy_static! {
+    static ref CLIENT: reqwest::Client = reqwest::Client::new();
+}
+
 pub async fn download_from_uuid(uuid: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
     let url = format!(
         "https://sessionserver.mojang.com/session/minecraft/profile/{}",
         uuid
     );
-    let resp = reqwest::get(&url).await?;
-    let body = resp.text().await?;
-    let json: MojangSkinResponse = serde_json::from_str(&body)?;
+    let resp = CLIENT.get(&url).send().await?;
+    let json: MojangSkinResponse = resp.json().await?;
     let skin_base64 = &json
         .properties
         .iter()
@@ -56,7 +60,7 @@ pub async fn download_from_texture_id(
     texture_id: &str,
 ) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
     let url = format!("https://textures.minecraft.net/texture/{}", texture_id);
-    let resp = reqwest::get(&url).await?;
+    let resp = CLIENT.get(&url).send().await?;
     let body = resp.bytes().await?;
     Ok(body.to_vec())
 }
