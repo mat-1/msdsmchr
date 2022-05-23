@@ -2,24 +2,27 @@ pub mod mojang;
 pub mod render;
 
 use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
-use std::{io::Cursor, time::Instant};
+use std::io::Cursor;
 
 #[get("/")]
 async fn index() -> impl Responder {
     HttpResponse::Ok()
+        .append_header(("Content-Type", "text/html"))
         .body(
-            "mat's super duper simple minecraft head renderer\n\n\
-            Usage:\n\
-              /2d/<id>.png - returns an 8x8 image of the front of the player's Minecraft head\n\
-              /3d/<id>.png - returns a 128x128 image of the player's Minecraft head, the same way it'd look in a Minecraft inventory\n\n\
-            You can use either an undashed player UUID or a resource ID.\n\n\
-            https://github.com/mat-1/msdsmchr"
+            "<h1>mat's super duper simple minecraft head renderer</h1>\
+            <h2>Usage:</h2>\
+            <ul>
+            <li>/2d/&lt;id&gt; - returns an 8x8 image of the front of the player's Minecraft head</li>\
+            <li>/3d/&lt;id&gt; - returns a 128x128 image of the player's Minecraft head, the same way it'd look in a Minecraft inventory</li>\
+            </ul>
+            <p>You can use either an undashed player UUID or a resource ID.</p>\
+            <p><a href=\"https://github.com/mat-1/msdsmchr\">View source</a></p>"
         )
 }
 
 const DO_OPTIMIZATION: bool = false;
 
-#[get("/2d/{id}.png")]
+#[get("/2d/{id}")]
 async fn make_2d_head(id: web::Path<String>) -> impl Responder {
     let skin_bytes = mojang::download_from_id(&id).await.unwrap();
     let skin_image = render::to_2d_head(&image::load_from_memory(&skin_bytes).unwrap());
@@ -41,7 +44,7 @@ async fn make_2d_head(id: web::Path<String>) -> impl Responder {
         })
 }
 
-#[get("/3d/{id}.png")]
+#[get("/3d/{id}")]
 async fn make_3d_head(id: web::Path<String>) -> impl Responder {
     let skin_bytes = mojang::download_from_id(&id).await.unwrap();
     let skin_image = render::to_3d_head(&image::load_from_memory(&skin_bytes).unwrap());
