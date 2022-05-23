@@ -2,5 +2,5 @@
 
 https://h.matdoes.dev
 
-Math from [Crafthead](https://github.com/astei/crafthead)
+Some math from [Crafthead](https://github.com/astei/crafthead)
 
