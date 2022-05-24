@@ -17,7 +17,7 @@ pub async fn index(_req: Request, _ctx: RouteContext<()>) -> Result<Response> {
 
 pub async fn make_2d_head(_req: Request, ctx: RouteContext<()>) -> Result<Response> {
     let id = ctx.param("id").unwrap();
-    let skin_bytes = match mojang::download_from_id(&id).await {
+    let skin_bytes = match mojang::download_from_id(id).await {
         Ok(bytes) => bytes,
         Err(e) => return Response::error(e.to_string(), 400),
     };
@@ -39,7 +39,7 @@ pub async fn make_3d_head(_req: Request, ctx: RouteContext<()>) -> Result<Respon
         Some(id) => id,
         None => return Response::error("Bad Request", 400),
     };
-    let skin_bytes = match mojang::download_from_id(&id).await {
+    let skin_bytes = match mojang::download_from_id(id).await {
         Ok(bytes) => bytes,
         Err(e) => return Response::error(e.to_string(), 400),
     };
