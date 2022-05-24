@@ -64,7 +64,7 @@ pub fn fast_overlay(
                 &bottom.as_raw()[index..(index + Rgba::<u8>::CHANNEL_COUNT as usize)],
             );
 
-            bottom_pixel.blend(&p);
+            bottom_pixel.blend(p);
 
             bottom.put_pixel(x, y, bottom_pixel);
         }
