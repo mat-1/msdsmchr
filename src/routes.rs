@@ -10,7 +10,7 @@ pub async fn index() -> impl Responder {
             <h2>Usage:</h2>\
             <ul>
             <li>/2d/&lt;id&gt; - returns an 8x8 image of the front of the player's Minecraft head</li>\
-            <li>/3d/&lt;id&gt; - returns a 128x128 image of the player's Minecraft head, the same way it'd look in a Minecraft inventory</li>\
+            <li>/3d/&lt;id&gt; - returns a 128x128 image of the player's Minecraft head, the same way it'd look in an inventory</li>\
             </ul>
             <p>You can use either an undashed player UUID or a resource ID.</p>\
             <p><a href=\"https://github.com/mat-1/msdsmchr\">View source</a></p>"
