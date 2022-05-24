@@ -1,0 +1,11 @@
+name = "msdsmchr"
+workers_dev = true
+
+compatibility_date = "2022-05-23"
+main = "build/worker/shim.mjs"
+
+[vars]
+WORKERS_RS_VERSION = "0.0.9"
+
+[build]
+command = "cargo install -q worker-build && worker-build --release"
