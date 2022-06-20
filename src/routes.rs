@@ -52,7 +52,7 @@ pub async fn make_3d_head(_req: Request, ctx: RouteContext<()>) -> Result<Respon
     let headers = response.headers_mut();
     headers.set("Content-Type", "image/png")?;
     headers.set("Access-Control-Allow-Origin", "*")?;
-    headers.set("Cache-Control", "public, max-age=86400")?;
+    headers.set("Cache-Control", "max-age=14400")?;
 
     Ok(response)
 }
