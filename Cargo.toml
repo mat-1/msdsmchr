@@ -11,11 +11,11 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 base64 = "0.13.0"
 console_error_panic_hook = "0.1.7"
-image = {version = "0.24.2", default-features = false, features = ["png"]}
-imageproc = {version = "0.23.0", default-features = false, features = []}
-serde = {version = "1.0.137", features = ["derive"]}
+image = { version = "0.24.2", default-features = false, features = ["png"] }
+imageproc = { version = "0.23.0", default-features = false, features = [] }
+serde = { version = "1.0.137", features = ["derive"] }
 serde_json = "1.0.81"
-worker = "0.0.9"
+worker = "0.0.10"
 
 [dev-dependencies]
 criterion = "0.3.5"
@@ -30,7 +30,8 @@ debug = true
 # this will be removed once the changes are released
 [patch.crates-io]
 image = {git = "https://github.com/image-rs/image"}
-imageproc = {git = "https://github.com/mat-1/imageproc"}
+imageproc = {git = "https://github.com/image-rs/imageproc"}
+# worker 0.10.0 is broken
 
 # [profile.release]
 # # Tell `rustc` to optimize for small code size.

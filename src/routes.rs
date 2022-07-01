@@ -15,7 +15,13 @@ pub async fn index(_req: Request, _ctx: RouteContext<()>) -> Result<Response> {
     )
 }
 
-pub async fn make_2d_head(_req: Request, ctx: RouteContext<()>) -> Result<Response> {
+pub async fn make_2d_head(req: Request, ctx: RouteContext<()>) -> Result<Response> {
+    let cache = Cache::default();
+    let key = req.url()?.to_string();
+    if let Some(resp) = cache.get(&key, true).await? {
+        return Ok(resp);
+    }
+
     let id = ctx.param("id").unwrap();
     let skin_bytes = match mojang::download_from_id(id).await {
         Ok(bytes) => bytes,
@@ -30,11 +36,20 @@ pub async fn make_2d_head(_req: Request, ctx: RouteContext<()>) -> Result<Respon
     let headers = response.headers_mut();
     headers.set("Content-Type", "image/png")?;
     headers.set("Access-Control-Allow-Origin", "*")?;
-    headers.set("Cache-Control", "public, max-age=86400")?;
+    headers.set("Cache-Control", "max-age=14400")?;
+    
+    cache.put(key, response.cloned()?).await?;
+
     Ok(response)
 }
 
-pub async fn make_3d_head(_req: Request, ctx: RouteContext<()>) -> Result<Response> {
+pub async fn make_3d_head(req: Request, ctx: RouteContext<()>) -> Result<Response> {
+    let cache = Cache::default();
+    let key = req.url()?.to_string();
+    if let Some(resp) = cache.get(&key, true).await? {
+        return Ok(resp);
+    }
+
     let id = match ctx.param("id") {
         Some(id) => id,
         None => return Response::error("Bad Request", 400),
@@ -53,6 +68,8 @@ pub async fn make_3d_head(_req: Request, ctx: RouteContext<()>) -> Result<Respon
     headers.set("Content-Type", "image/png")?;
     headers.set("Access-Control-Allow-Origin", "*")?;
     headers.set("Cache-Control", "max-age=14400")?;
+
+    cache.put(key, response.cloned()?).await?;
 
     Ok(response)
 }
