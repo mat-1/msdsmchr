@@ -882,7 +882,7 @@ dependencies = [
 [[package]]
 name = "imageproc"
 version = "0.23.0"
-source = "git+https://github.com/mat-1/imageproc#eacc8e4bdf4ad7eaa49cd6bb499cae7487b326d7"
+source = "git+https://github.com/image-rs/imageproc#600cac050cf283a6153d3d3d556b2a42092fea5d"
 dependencies = [
  "approx",
  "conv",

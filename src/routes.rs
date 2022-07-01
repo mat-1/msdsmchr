@@ -29,7 +29,7 @@ pub async fn make_2d_head(id: web::Path<String>) -> impl Responder {
     HttpResponse::Ok()
         .append_header(("Content-Type", "image/png"))
         .append_header(("Access-Control-Allow-Origin", "*"))
-        .append_header(("Cache-Control", "public, max-age=86400"))
+        .append_header(("Cache-Control", "public, max-age=14400"))
         .body(buf.into_inner())
 }
 
@@ -43,6 +43,6 @@ pub async fn make_3d_head(id: web::Path<String>) -> impl Responder {
     HttpResponse::Ok()
         .append_header(("Content-Type", "image/png"))
         .append_header(("Access-Control-Allow-Origin", "*"))
-        .append_header(("Cache-Control", "public, max-age=86400"))
+        .append_header(("Cache-Control", "public, max-age=14400"))
         .body(buf.into_inner())
 }
