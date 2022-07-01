@@ -26,11 +26,13 @@ pub async fn make_2d_head(id: web::Path<String>) -> impl Responder {
         .write_to(&mut buf, image::ImageOutputFormat::Png)
         .unwrap();
 
-    HttpResponse::Ok()
-        .append_header(("Content-Type", "image/png"))
-        .append_header(("Access-Control-Allow-Origin", "*"))
-        .append_header(("Cache-Control", "public, max-age=14400"))
-        .body(buf.into_inner())
+    let mut response = HttpResponse::Ok();
+
+    response.append_header(("Content-Type", "image/png"));
+    response.append_header(("Access-Control-Allow-Origin", "*"));
+    response.append_header(("Cache-Control", "public, max-age=14400"));
+
+    response.body(buf.into_inner())
 }
 
 pub async fn make_3d_head(id: web::Path<String>) -> impl Responder {
@@ -40,9 +42,12 @@ pub async fn make_3d_head(id: web::Path<String>) -> impl Responder {
     skin_image
         .write_to(&mut buf, image::ImageOutputFormat::Png)
         .unwrap();
-    HttpResponse::Ok()
-        .append_header(("Content-Type", "image/png"))
-        .append_header(("Access-Control-Allow-Origin", "*"))
-        .append_header(("Cache-Control", "public, max-age=14400"))
-        .body(buf.into_inner())
+
+    let mut response = HttpResponse::Ok();
+
+    response.append_header(("Content-Type", "image/png"));
+    response.append_header(("Access-Control-Allow-Origin", "*"));
+    response.append_header(("Cache-Control", "public, max-age=14400"));
+    
+    response.body(buf.into_inner())
 }
