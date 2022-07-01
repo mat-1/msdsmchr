@@ -33,6 +33,7 @@ pub async fn make_2d_head(req: Request, ctx: RouteContext<()>) -> Result<Respons
         .write_to(&mut buf, image::ImageOutputFormat::Png)
         .unwrap();
     let mut response = Response::from_bytes(buf.into_inner())?;
+
     let headers = response.headers_mut();
     headers.set("Content-Type", "image/png")?;
     headers.set("Access-Control-Allow-Origin", "*")?;
@@ -64,6 +65,7 @@ pub async fn make_3d_head(req: Request, ctx: RouteContext<()>) -> Result<Respons
         .write_to(&mut buf, image::ImageOutputFormat::Png)
         .unwrap();
     let mut response = Response::from_bytes(buf.into_inner())?;
+
     let headers = response.headers_mut();
     headers.set("Content-Type", "image/png")?;
     headers.set("Access-Control-Allow-Origin", "*")?;
