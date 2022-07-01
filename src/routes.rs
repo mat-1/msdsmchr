@@ -36,7 +36,7 @@ pub async fn make_2d_head(req: Request, ctx: RouteContext<()>) -> Result<Respons
     let headers = response.headers_mut();
     headers.set("Content-Type", "image/png")?;
     headers.set("Access-Control-Allow-Origin", "*")?;
-    headers.set("Cache-Control", "max-age=14400")?;
+    headers.set("Cache-Control", "max-age=86400")?;
     
     cache.put(key, response.cloned()?).await?;
 
@@ -67,7 +67,7 @@ pub async fn make_3d_head(req: Request, ctx: RouteContext<()>) -> Result<Respons
     let headers = response.headers_mut();
     headers.set("Content-Type", "image/png")?;
     headers.set("Access-Control-Allow-Origin", "*")?;
-    headers.set("Cache-Control", "max-age=14400")?;
+    headers.set("Cache-Control", "max-age=86400")?;
 
     cache.put(key, response.cloned()?).await?;
 
