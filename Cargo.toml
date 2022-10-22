@@ -14,9 +14,10 @@ base64 = "0.13.0"
 image = {version = "0.24.2", default-features = false, features = ["png"]}
 imageproc = {version = "0.23.0", default-features = false, features = []}
 lazy_static = "1.4.0"
-reqwest = { version = "0.11.10", features = ["json"]}
+reqwest = {version = "0.11.10", features = ["json"]}
 serde = {version = "1.0.137", features = ["derive"]}
 serde_json = "1.0.81"
+uuid = {version = "1.2.1"}
 
 [dev-dependencies]
 criterion = "0.3.5"
