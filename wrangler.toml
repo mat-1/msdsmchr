@@ -2,7 +2,7 @@ name = "msdsmchr"
 workers_dev = true
 
 compatibility_date = "2022-06-22"
-main = "build/worker/shim.js"
+main = "build/worker/shim.mjs"
 
 [vars]
 WORKERS_RS_VERSION = "0.0.10"
@@ -12,5 +12,5 @@ WORKERS_RS_VERSION = "0.0.10"
 # note that to release you have to install esbuild and perl, and manually type in the command below.
 # then, do wrangler publish.
 
-# command = "cargo install --git https://github.com/mat-1/workers-rs --branch zeb/esbuild && worker-build --release"
-command = ""
+command = "cargo install -q --git https://github.com/cloudflare/workers-rs && worker-build --release"
+# command = ""
