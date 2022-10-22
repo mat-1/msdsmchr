@@ -99,7 +99,7 @@ pub async fn download_from_id(id: &str) -> Result<Vec<u8>, DownloadError> {
                 Ok(data) => data,
                 Err(_) => {
                     // random skin depending on the least significant bit of the uuid
-                    match id.as_bytes()[0] & 1 {
+                    match id.as_bytes().last().unwrap() & 1 {
                         0 => include_bytes!("assets/steve.png").to_vec(),
                         _ => include_bytes!("assets/alex.png").to_vec(),
                     }
