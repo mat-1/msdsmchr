@@ -11,10 +11,11 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 base64 = "0.13.0"
 console_error_panic_hook = "0.1.7"
-image = { version = "0.24.2", default-features = false, features = ["png"] }
-imageproc = { version = "0.23.0", default-features = false, features = [] }
-serde = { version = "1.0.137", features = ["derive"] }
+image = {version = "0.24.2", default-features = false, features = ["png"]}
+imageproc = {version = "0.23.0", default-features = false, features = []}
+serde = {version = "1.0.137", features = ["derive"]}
 serde_json = "1.0.81"
+uuid = {version = "1.2.1", features = ["wasm-bindgen"]}
 worker = "0.0.10"
 
 [dev-dependencies]

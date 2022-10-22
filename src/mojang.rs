@@ -1,4 +1,5 @@
 use std::fmt::{Display, Formatter};
+use uuid::Uuid;
 
 use serde::Deserialize;
 
@@ -30,6 +31,7 @@ struct TexturesDataTexturesSkin {
 pub enum DownloadError {
     InvalidTexture,
     WorkerError,
+    InvalidUuid,
 }
 
 impl Display for DownloadError {
@@ -37,6 +39,7 @@ impl Display for DownloadError {
         match self {
             DownloadError::InvalidTexture => write!(f, "Invalid texture"),
             DownloadError::WorkerError => write!(f, "Worker error"),
+            DownloadError::InvalidUuid => write!(f, "Invalid UUID"),
         }
     }
 }
@@ -95,11 +98,12 @@ pub async fn download_from_id(id: &str) -> Result<Vec<u8>, DownloadError> {
     // 64 is a texture id
     match id.len() {
         32 => {
+            let uuid = Uuid::parse_str(id).map_err(|_| DownloadError::InvalidUuid)?;
             Ok(match download_from_uuid(id).await {
                 Ok(data) => data,
                 Err(_) => {
                     // random skin depending on the least significant bit of the uuid
-                    match id.as_bytes().last().unwrap() & 1 {
+                    match java_hash_code(&uuid) & 1 {
                         0 => include_bytes!("assets/steve.png").to_vec(),
                         _ => include_bytes!("assets/alex.png").to_vec(),
                     }
@@ -108,4 +112,11 @@ pub async fn download_from_id(id: &str) -> Result<Vec<u8>, DownloadError> {
         }
         _ => download_from_texture_id(id).await,
     }
+}
+
+fn java_hash_code(uuid: &Uuid) -> u32 {
+    let most_sig_bits = uuid.as_u128() >> 64;
+    let least_sig_bits = uuid.as_u128() & 0xFFFF_FFFF_FFFF_FFFF;
+    let hash = most_sig_bits ^ least_sig_bits;
+    (hash ^ (hash >> 32)) as u32
 }
