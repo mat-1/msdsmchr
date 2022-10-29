@@ -2,6 +2,7 @@ use std::fmt::{Display, Formatter};
 use uuid::Uuid;
 
 use serde::Deserialize;
+use worker::console_log;
 
 #[derive(Deserialize)]
 struct MojangSkinResponse {
@@ -101,7 +102,8 @@ pub async fn download_from_id(id: &str) -> Result<Vec<u8>, DownloadError> {
             let uuid = Uuid::parse_str(id).map_err(|_| DownloadError::InvalidUuid)?;
             Ok(match download_from_uuid(id).await {
                 Ok(data) => data,
-                Err(_) => {
+                Err(e) => {
+                    console_log!("Failed to download skin from uuid: {:?}", e);
                     // random skin depending on the least significant bit of the uuid
                     match java_hash_code(&uuid) & 1 {
                         0 => include_bytes!("assets/steve.png").to_vec(),
