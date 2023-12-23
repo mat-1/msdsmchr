@@ -6,7 +6,7 @@ use actix_web::{web, App, HttpServer};
 
 #[actix_web::main] // or #[tokio::main]
 async fn main() -> std::io::Result<()> {
-    println!("Running :)");
+    println!("Running on 127.0.0.1:26738");
 
     HttpServer::new(|| {
         App::new()
@@ -14,7 +14,7 @@ async fn main() -> std::io::Result<()> {
             .route("/3d/{id}", web::get().to(routes::make_3d_head))
             .route("/2d/{id}", web::get().to(routes::make_2d_head))
     })
-    .bind(("0.0.0.0", 8080))?
+    .bind(("0.0.0.0", 26738))?
     .run()
     .await
 }

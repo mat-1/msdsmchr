@@ -48,6 +48,6 @@ pub async fn make_3d_head(id: web::Path<String>) -> impl Responder {
     response.append_header(("Content-Type", "image/png"));
     response.append_header(("Access-Control-Allow-Origin", "*"));
     response.append_header(("Cache-Control", "public, max-age=14400"));
-    
+
     response.body(buf.into_inner())
 }
