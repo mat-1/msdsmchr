@@ -53,7 +53,7 @@ impl From<worker::Error> for DownloadError {
 
 pub async fn download_from_uuid(uuid: &str) -> Result<Vec<u8>, DownloadError> {
     let url = format!(
-        "https://sessionserver.mojang.com/session/minecraft/profile/{}",
+        "https://mowojang.matdoes.dev/session/minecraft/profile/{}",
         uuid
     );
     let mut resp = worker::Fetch::Url(worker::Url::parse(&url).unwrap())
