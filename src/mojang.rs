@@ -56,7 +56,7 @@ lazy_static! {
 
 pub async fn download_from_uuid(uuid: &str) -> Result<Vec<u8>, DownloadError> {
     let url = format!(
-        "https://sessionserver.mojang.com/session/minecraft/profile/{}",
+        "https://mowojang.matdoes.dev/session/minecraft/profile/{}",
         uuid
     );
     let resp = CLIENT.get(&url).send().await?;
